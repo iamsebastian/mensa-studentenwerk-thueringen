@@ -31,10 +31,11 @@
   },
   "homepage": "https://github.com/iamsebastian/mensa-studentenwerk-thueringen#readme",
   "dependencies": {
+    "express": "^4.13.1",
+    "express-handlebars": "^2.0.1",
     "iconv": "^2.1.8",
     "jsdom": "^5.6.1",
     "request": "^2.60.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
