@@ -1,0 +1,40 @@
+{
+  "name": "mensa-studentenwerk-thueringen",
+  "version": "0.0.1",
+  "description": "CLI and express app to get daily food table from 'Studentenwerk Thüringen'",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamsebastian/mensa-studentenwerk-thueringen.git"
+  },
+  "keywords": [
+    "mensa",
+    "stw",
+    "thueringen",
+    "thüringen",
+    "nordhausen",
+    "erfurt",
+    "jena",
+    "schmalkalden",
+    "meiningen",
+    "eisenach",
+    "gera",
+    "weimar"
+  ],
+  "author": "Sebastian Blei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamsebastian/mensa-studentenwerk-thueringen/issues"
+  },
+  "homepage": "https://github.com/iamsebastian/mensa-studentenwerk-thueringen#readme",
+  "dependencies": {
+    "iconv": "^2.1.8",
+    "jsdom": "^5.6.1",
+    "request": "^2.60.0"
+  },
+  "devDependencies": {
+  }
+}
