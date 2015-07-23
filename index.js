@@ -34,7 +34,7 @@ extractFood = function extractFood(window, number) {
 
 
     _food = $(`#day_${day} tr:nth-of-type(${index}) td:nth-of-type(2)`).html().trim()
-        .match(/[\w\ ,\+äöüß]+/i)[0].trim();
+        .match(/[\w\ ,\+äöüß\-]+/i)[0].trim();
 
     _price = $(`#day_${day} > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(${index}) > td:nth-child(3)`)
         .html().match(/\d\,\d{1,2}\ €/)[0];
