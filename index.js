@@ -2,7 +2,6 @@
 let Iconv = require('iconv').Iconv,
     fs = require('fs'),
     app,
-    css = fs.readFileSync('./public/css/materialize.min.css'),
     destinationHtmlPath = process.argv[2] || null,
     dom = require('jsdom'),
     domCallback,
@@ -13,11 +12,9 @@ let Iconv = require('iconv').Iconv,
     Hbs = require('express-handlebars'),
     hbsHelpers = require('./lib/helpers'),
     mensa = 'nordhausen',
-    renderCb,
     renderOptions,
     req = require('request'),
-    url,
-    util = require('util');
+    url;
 
 mensa = mensa.toLowerCase().trim();
 
