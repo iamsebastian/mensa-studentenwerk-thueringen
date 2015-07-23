@@ -3,6 +3,7 @@ let Iconv = require('iconv').Iconv,
     fs = require('fs'),
     app,
     css = fs.readFileSync('./public/css/materialize.min.css'),
+    destinationHtmlPath = process.argv[2] || null,
     dom = require('jsdom'),
     domCallback,
     express = require('express'),
@@ -11,7 +12,9 @@ let Iconv = require('iconv').Iconv,
     hbs,
     Hbs = require('express-handlebars'),
     hbsHelpers = require('./lib/helpers'),
-    mensa = process.argv[2] || 'nordhausen',
+    mensa = 'nordhausen',
+    renderCb,
+    renderOptions,
     req = require('request'),
     url,
     util = require('util');
@@ -53,6 +56,18 @@ domCallback = function domCallback(errors, window) {
     while(foodCount) {
         foods.push(extractFood(window, foodCount--));
     }
+
+    renderOptions = {
+        foods: foods
+    };
+
+    app.render('home', renderOptions, function renderCb(err, str) {
+        console.log(str);
+
+        if (destinationHtmlPath) {
+            fs.writeFile(destinationHtmlPath, str);
+        }
+    });
 };
 
 req(url,
@@ -79,14 +94,3 @@ app = express();
 app.engine('handlebars', hbs.engine);
 
 app.set('view engine', 'handlebars');
-
-app.get('/', function(req, res) {
-    res.render('home', {
-        css: css,
-        foods: foods
-    });
-});
-
-app.use(express.static('public/'));
-
-app.listen(1025);
