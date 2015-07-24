@@ -1,4 +1,6 @@
 'use strict';
+process.env.DEBUG = '*';
+
 let Iconv = require('iconv').Iconv,
     fs = require('fs'),
     app,
@@ -10,20 +12,30 @@ let Iconv = require('iconv').Iconv,
     foods,
     hbs,
     Hbs = require('express-handlebars'),
-    hbsHelpers = require('./lib/helpers'),
+    hbsHelpers = require(`${__dirname}/lib/helpers`),
     mensa = 'nordhausen',
     renderOptions,
     req = require('request'),
     url;
+
+console.log(`Executing parser in ${__dirname}.`);
 
 mensa = mensa.toLowerCase().trim();
 
 url = `http://www.stw-thueringen.de/deutsch/mensen/einrichtungen/${mensa}/mensa-${mensa}.html`;
 
 hbs = Hbs.create({
-    defaultLayout: 'main',
+    defaultLayout: `${__dirname}/views/layouts/main`,
     helpers: hbsHelpers
 });
+
+app = express();
+
+app.engine('handlebars', hbs.engine);
+
+app.set('views', `${__dirname}/views`);
+
+app.set('view engine', 'handlebars');
 
 extractFood = function extractFood(window, number) {
     let $ = window.jQuery,
@@ -85,9 +97,3 @@ req(url,
 
     }
    );
-
-app = express();
-
-app.engine('handlebars', hbs.engine);
-
-app.set('view engine', 'handlebars');
