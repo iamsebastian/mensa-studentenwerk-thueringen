@@ -37,16 +37,15 @@ app.set('views', `${__dirname}/views`);
 
 app.set('view engine', 'handlebars');
 
-extractFood = function extractFood(window, number) {
+extractFood = function extractFood(window, number, day) {
     let $ = window.jQuery,
-        day = new Date().getDay() + 1,
         index = number + 1,
         _food,
         _price;
 
 
     _food = $(`#day_${day} tr:nth-of-type(${index}) td:nth-of-type(2)`).html().trim()
-        .match(/[\w\ ,\+äöüß\-]+/i)[0].trim();
+        .match(/[\w\ ,\+äöüß\-\"]+/i)[0].trim();
 
     _price = $(`#day_${day} > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(${index}) > td:nth-child(3)`)
         .html().match(/\d\,\d{1,2}\ €/)[0];
@@ -58,16 +57,27 @@ extractFood = function extractFood(window, number) {
 };
 
 domCallback = function domCallback(errors, window) {
-    let foodCount = 3;
+    let foodCount = 3,
+        // Today is saturday or sunday? Take monday.
+        today = new Date().getDay() > 5 ? 2 : new Date().getDay(),
+        todayFoods,
+        // Today is friday? Next day is monday.
+        tomorrow = today > 6 ? 2 : today + 1,
+        tomorrowFoods;
 
-    foods = foods || [];
+    todayFoods = todayFoods || [];
+    tomorrowFoods = tomorrowFoods || [];
 
-    while(foodCount) {
-        foods.push(extractFood(window, foodCount--));
+    for (var i = 0; i < foodCount; i++) {
+        todayFoods.push(extractFood(window, i, today));
+        tomorrowFoods.push(extractFood(window, i, tomorrow));
     }
 
     renderOptions = {
-        foods: foods
+        foods: {
+            today: todayFoods,
+            tomorrow: tomorrowFoods
+        }
     };
 
     app.render('home', renderOptions, function renderCb(err, str) {

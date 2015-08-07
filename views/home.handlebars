@@ -7,7 +7,17 @@
     </thead>
 
     <tbody>
-    {{#each foods}}
+    {{#each foods.todayFoods}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{price}}</td>
+        </tr>
+    {{/each}}
+        <tr>
+            <td><i>Morgen / Montag:</i></td>
+            <td></td>
+        </tr>
+    {{#each foods.tomorrowFoods}}
         <tr>
             <td>{{name}}</td>
             <td>{{price}}</td>
