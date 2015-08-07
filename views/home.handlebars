@@ -13,15 +13,24 @@
             <td>{{price}}</td>
         </tr>
     {{/each}}
-        <tr>
-            <td><i>Morgen / Montag:</i></td>
-            <td></td>
-        </tr>
-    {{#each foods.tomorrow}}
-        <tr>
-            <td>{{name}}</td>
-            <td>{{price}}</td>
-        </tr>
-    {{/each}}
     </tbody>
 </table>
+
+{{#if isTomorrow}}
+    <table>
+        <thead>
+            <tr>
+                <th>Morgen / Montag</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each foods.tomorrow}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{price}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{/if}}

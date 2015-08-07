@@ -61,7 +61,9 @@ domCallback = function domCallback(errors, window) {
         today = new Date().getDay() > 5 ? 2 : new Date().getDay() + 1,
         todayFoods,
         // Today is friday? Next day is monday.
-        tomorrow = today > 5 ? 2 : today + 1,
+        // But information is not available, so
+        // do not display it.
+        tomorrow = today > 5 ? false : today + 1,
         tomorrowFoods;
 
     todayFoods = todayFoods || [];
@@ -70,10 +72,15 @@ domCallback = function domCallback(errors, window) {
     for (var i = 2; i < foodCount + 2; i++) {
         // Correct table index begins with 2, up to 4.
         todayFoods.push(extractFood(window, i, today));
-        tomorrowFoods.push(extractFood(window, i, tomorrow));
+        if (tomorrow !== false) {
+            tomorrowFoods.push(extractFood(window, i, tomorrow));
+        }
     }
 
+    console.log('tomorrow: ', tomorrow);
+
     renderOptions = {
+        isTomorrow: tomorrow !== false,
         foods: {
             today: todayFoods,
             tomorrow: tomorrowFoods
