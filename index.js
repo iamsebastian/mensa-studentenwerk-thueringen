@@ -37,9 +37,8 @@ app.set('views', `${__dirname}/views`);
 
 app.set('view engine', 'handlebars');
 
-extractFood = function extractFood(window, number, day) {
+extractFood = function extractFood(window, index, day) {
     let $ = window.jQuery,
-        index = number + 1,
         _food,
         _price;
 
@@ -59,16 +58,17 @@ extractFood = function extractFood(window, number, day) {
 domCallback = function domCallback(errors, window) {
     let foodCount = 3,
         // Today is saturday or sunday? Take monday.
-        today = new Date().getDay() > 5 ? 2 : new Date().getDay(),
+        today = new Date().getDay() > 5 ? 2 : new Date().getDay() + 1,
         todayFoods,
         // Today is friday? Next day is monday.
-        tomorrow = today > 6 ? 2 : today + 1,
+        tomorrow = today > 5 ? 2 : today + 1,
         tomorrowFoods;
 
     todayFoods = todayFoods || [];
     tomorrowFoods = tomorrowFoods || [];
 
-    for (var i = 0; i < foodCount; i++) {
+    for (var i = 2; i < foodCount + 2; i++) {
+        // Correct table index begins with 2, up to 4.
         todayFoods.push(extractFood(window, i, today));
         tomorrowFoods.push(extractFood(window, i, tomorrow));
     }
