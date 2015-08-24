@@ -9,7 +9,6 @@ let Iconv = require('iconv').Iconv,
     domCallback,
     express = require('express'),
     extractFood,
-    foods,
     hbs,
     Hbs = require('express-handlebars'),
     hbsHelpers = require(`${__dirname}/lib/helpers`),
@@ -43,11 +42,20 @@ extractFood = function extractFood(window, index, day) {
         _price;
 
 
-    _food = $(`#day_${day} tr:nth-of-type(${index}) td:nth-of-type(2)`).html().trim()
-        .match(/[\w\ ,\+äöüß\-\"]+/i)[0].trim();
+    _food = $(`#day_${day} tr:nth-of-type(${index}) td:nth-of-type(2)`).html();
+
+    if (!_food) {
+        return null;
+    }
+
+    _food = _food.trim().match(/[\w\ ,\+äöüß\-\"]+/i)[0].trim();
 
     _price = $(`#day_${day} > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(${index}) > td:nth-child(3)`)
-        .html().match(/\d\,\d{1,2}\ €/)[0];
+        .html()
+
+    if (_price) {
+        _price = _price.match(/\d\,\d{1,2}\ €/)[0];
+    }
 
     return {
         name: _food,
@@ -59,11 +67,13 @@ domCallback = function domCallback(errors, window) {
     let foodCount = 3,
         // Today is saturday or sunday? Take monday.
         today = new Date().getDay() > 5 ? 2 : new Date().getDay() + 1,
+        todayFood,
         todayFoods,
         // Today is friday? Next day is monday.
         // But information is not available, so
         // do not display it.
         tomorrow = today > 5 ? false : today + 1,
+        tomorrowFood,
         tomorrowFoods;
 
     todayFoods = todayFoods || [];
@@ -71,9 +81,17 @@ domCallback = function domCallback(errors, window) {
 
     for (var i = 2; i < foodCount + 2; i++) {
         // Correct table index begins with 2, up to 4.
-        todayFoods.push(extractFood(window, i, today));
+        todayFood = extractFood(window, i, today);
+        if (!todayFood) {
+            continue;
+        }
+        todayFoods.push(todayFood);
+
         if (tomorrow !== false) {
-            tomorrowFoods.push(extractFood(window, i, tomorrow));
+            tomorrowFood = extractFood(window, i, tomorrow);
+            if (tomorrowFood) {
+                tomorrowFoods.push(tomorrowFood);
+            }
         }
     }
 
