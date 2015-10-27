@@ -1,21 +1,21 @@
 'use strict';
 process.env.DEBUG = '*';
 
-let Iconv = require('iconv').Iconv,
-    fs = require('fs'),
-    app,
-    destinationHtmlPath = process.argv[2] || null,
-    dom = require('jsdom'),
-    domCallback,
-    express = require('express'),
-    extractFood,
-    hbs,
-    Hbs = require('express-handlebars'),
-    hbsHelpers = require(`${__dirname}/lib/helpers`),
-    mensa = 'nordhausen',
-    renderOptions,
-    req = require('request'),
-    url;
+let Iconv = require('iconv').Iconv;
+let fs = require('fs');
+let app;
+let destinationHtmlPath = process.argv[2] || null;
+let dom = require('jsdom');
+let domCallback;
+let express = require('express');
+let extractFood;
+let hbs;
+let Hbs = require('express-handlebars');
+let hbsHelpers = require(`${__dirname}/lib/helpers`);
+let mensa = 'nordhausen';
+let renderOptions;
+let req = require('request');
+let url;
 
 console.log(`Executing parser in ${__dirname}.`);
 
@@ -48,10 +48,10 @@ extractFood = function extractFood(window, index, day) {
         return null;
     }
 
-    _food = _food.trim().match(/[\w\ ,\+äöüß\-\"]+/i)[0].trim();
+    _food = _food.trim().match(/[\w\:\ ,\+äöüß\-\"]+/i)[0].trim();
 
     _price = $(`#day_${day} > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(${index}) > td:nth-child(3)`)
-        .html()
+        .html();
 
     if (_price) {
         _price = _price.match(/\d\,\d{1,2}\ €/)[0];
